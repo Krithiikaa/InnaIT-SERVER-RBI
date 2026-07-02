@@ -1,0 +1,24 @@
+{
+  "enabled": true,
+  "bitrate": 6000000,
+  "max_sessions": 1,
+  "sites": [
+    {
+      "id": "default",
+      "name": "Precision IT",
+      "url": "https://www.precisionit.co.in/",
+      "port": 8100,
+      "policies": {
+        "read_only": false,
+        "scroll_lock": false,
+        "copy": false,
+        "paste": false,
+        "clipboard": false,
+        "print": false,
+        "download": false,
+        "devtools": false,
+        "file_management": false
+      }
+    }
+  ]
+}

@@ -1,0 +1,149 @@
+<svg viewBox="0 0 1320 780" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&amp;display=swap');
+      text{ font-family:'Playfair Display', Georgia, serif; }
+      .h{ fill:#f3fbee; font-weight:700; } .sub{ fill:#9fd47a; } .lbl{ fill:#e4f4d6; font-weight:600; }
+      .mut{ fill:#7fa861; } .grn{ fill:#7ac943; font-weight:700; } .warn{ fill:#ecd98f; }
+    </style>
+    <filter id="g" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <filter id="gb" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <radialGradient id="vig" cx="50%" cy="40%" r="82%"><stop offset="0%" stop-color="#0a140a"/><stop offset="100%" stop-color="#000"/></radialGradient>
+    <linearGradient id="gl" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#2f5a1c"/><stop offset="100%" stop-color="#7ac943"/></linearGradient>
+  </defs>
+  <rect width="1320" height="780" fill="url(#vig)"/>
+  <g opacity="0.07" stroke="#7ac943" stroke-width="2">
+    <line x1="330" y1="0" x2="330" y2="780" stroke-dasharray="3 28"><animate attributeName="stroke-dashoffset" from="0" to="310" dur="7s" repeatCount="indefinite"/></line>
+    <line x1="700" y1="0" x2="700" y2="780" stroke-dasharray="3 30"><animate attributeName="stroke-dashoffset" from="0" to="330" dur="6.4s" repeatCount="indefinite"/></line>
+    <line x1="1010" y1="0" x2="1010" y2="780" stroke-dasharray="3 24"><animate attributeName="stroke-dashoffset" from="0" to="270" dur="5.6s" repeatCount="indefinite"/></line>
+  </g>
+
+  <g transform="translate(54,52)" filter="url(#gb)">
+    <path d="M0,-22 L19,-13 L19,7 C19,22 0,34 0,34 C0,34 -19,22 -19,7 L-19,-13 Z" fill="#06140a" stroke="#7ac943" stroke-width="2.2"/>
+    <path d="M-8,2 C-8,-5 8,-5 8,2" fill="none" stroke="#7ac943" stroke-width="1.6"/><path d="M-5,5 C-5,0 5,0 5,5" fill="none" stroke="#7ac943" stroke-width="1.6"/>
+  </g>
+  <text x="86" y="48" class="h" font-size="29">InnaIT RBI — System Architecture</text>
+  <text x="88" y="74" class="sub" font-size="15">One server: every viewer gets a private browser; the admin steers it through shared files.</text>
+
+  <!-- USERS column -->
+  <text x="150" y="135" class="lbl" font-size="15" text-anchor="middle">Users (different PCs)</text>
+  <g>
+    <g filter="url(#g)"><rect x="70" y="155" width="160" height="60" rx="12" fill="#0c130a" stroke="#7ac943" stroke-width="1.8"/></g>
+    <rect x="86" y="168" width="34" height="24" rx="3" fill="#04210a" stroke="#2f5a1c"/><text x="150" y="190" class="mut" font-size="12">browser A</text>
+    <g filter="url(#g)"><rect x="70" y="235" width="160" height="60" rx="12" fill="#0c130a" stroke="#7ac943" stroke-width="1.8"/></g>
+    <rect x="86" y="248" width="34" height="24" rx="3" fill="#04210a" stroke="#2f5a1c"/><text x="150" y="270" class="mut" font-size="12">browser B</text>
+    <g filter="url(#g)"><rect x="70" y="315" width="160" height="60" rx="12" fill="#0c130a" stroke="#7ac943" stroke-width="1.8"/></g>
+    <rect x="86" y="328" width="34" height="24" rx="3" fill="#04210a" stroke="#2f5a1c"/><text x="150" y="350" class="mut" font-size="12">browser C</text>
+  </g>
+
+  <!-- nginx future layer -->
+  <g filter="url(#g)"><rect x="290" y="200" width="120" height="130" rx="14" fill="#0a0f0a" stroke="#6b5a18" stroke-width="1.5" stroke-dasharray="6 6"/></g>
+  <text x="350" y="252" class="warn" font-size="13" text-anchor="middle">nginx</text>
+  <text x="350" y="272" font-size="10.5" fill="#b9a35a" text-anchor="middle">name → port</text>
+  <text x="350" y="288" font-size="10.5" fill="#b9a35a" text-anchor="middle">wss upgrade</text>
+  <text x="350" y="310" font-size="10" fill="#7a6c34" text-anchor="middle">(future / lead)</text>
+
+  <!-- ports -->
+  <g filter="url(#g)"><rect x="470" y="155" width="150" height="225" rx="14" fill="#070f07" stroke="#244016" stroke-width="1.5"/></g>
+  <text x="545" y="182" class="sub" font-size="13" text-anchor="middle">Listening ports</text>
+  <g text-anchor="middle">
+    <rect x="492" y="198" width="106" height="34" rx="8" fill="#0c130a" stroke="#7ac943"/><text x="545" y="220" class="grn" font-size="13">:8100</text>
+    <rect x="492" y="240" width="106" height="34" rx="8" fill="#0c130a" stroke="#7ac943"/><text x="545" y="262" class="grn" font-size="13">:8101</text>
+    <rect x="492" y="282" width="106" height="34" rx="8" fill="#0c130a" stroke="#7ac943"/><text x="545" y="304" class="grn" font-size="13">:8102</text>
+    <text x="545" y="344" class="mut" font-size="10.5">auto-assigned</text>
+    <text x="545" y="360" class="mut" font-size="10.5">per whitelisted site</text>
+  </g>
+
+  <!-- admission gate -->
+  <g filter="url(#g)"><rect x="660" y="200" width="120" height="135" rx="14" fill="#11180c" stroke="#caa53a" stroke-width="1.6"/></g>
+  <text x="720" y="240" class="warn" font-size="13" text-anchor="middle">Admission</text>
+  <text x="720" y="262" font-size="10.5" fill="#b9a35a" text-anchor="middle">cap = 3</text>
+  <text x="720" y="280" font-size="10.5" fill="#b9a35a" text-anchor="middle">psutil CPU/RAM</text>
+  <text x="720" y="298" font-size="10.5" fill="#b9a35a" text-anchor="middle">gate &lt; 85%</text>
+  <text x="720" y="320" font-size="10" fill="#7a6c34" text-anchor="middle">else: capacity</text>
+
+  <!-- private sessions -->
+  <g filter="url(#g)"><rect x="830" y="120" width="320" height="430" rx="16" fill="#060d06" stroke="#244016" stroke-width="1.5"/></g>
+  <text x="990" y="148" class="sub" font-size="14" text-anchor="middle">Private session per viewer</text>
+
+  <!-- session blocks -->
+  <g>
+    <!-- A -->
+    <g filter="url(#g)"><rect x="852" y="165" width="276" height="110" rx="12" fill="#0c130a" stroke="#7ac943" stroke-width="1.8"/></g>
+    <text x="868" y="188" class="lbl" font-size="12.5">display :101</text>
+    <rect x="868" y="200" width="78" height="54" rx="6" fill="#04210a" stroke="#2f5a1c"/><text x="907" y="231" class="mut" font-size="10" text-anchor="middle">Xvfb</text>
+    <rect x="956" y="200" width="78" height="54" rx="6" fill="#04210a" stroke="#2f5a1c"/><text x="995" y="225" class="mut" font-size="10" text-anchor="middle">Chrome</text><text x="995" y="240" class="mut" font-size="10" text-anchor="middle">kiosk</text>
+    <rect x="1044" y="200" width="72" height="54" rx="6" fill="#0c1f0c" stroke="#7ac943"/><text x="1080" y="225" class="grn" font-size="10" text-anchor="middle">VP8</text><text x="1080" y="240" class="grn" font-size="10" text-anchor="middle">encoder</text>
+    <!-- B -->
+    <g filter="url(#g)"><rect x="852" y="290" width="276" height="110" rx="12" fill="#0c130a" stroke="#7ac943" stroke-width="1.8"/></g>
+    <text x="868" y="313" class="lbl" font-size="12.5">display :102</text>
+    <rect x="868" y="325" width="78" height="54" rx="6" fill="#04210a" stroke="#2f5a1c"/><text x="907" y="356" class="mut" font-size="10" text-anchor="middle">Xvfb</text>
+    <rect x="956" y="325" width="78" height="54" rx="6" fill="#04210a" stroke="#2f5a1c"/><text x="995" y="350" class="mut" font-size="10" text-anchor="middle">Chrome</text><text x="995" y="365" class="mut" font-size="10" text-anchor="middle">kiosk</text>
+    <rect x="1044" y="325" width="72" height="54" rx="6" fill="#0c1f0c" stroke="#7ac943"/><text x="1080" y="350" class="grn" font-size="10" text-anchor="middle">VP8</text><text x="1080" y="365" class="grn" font-size="10" text-anchor="middle">encoder</text>
+    <!-- C -->
+    <g filter="url(#g)"><rect x="852" y="415" width="276" height="110" rx="12" fill="#0c130a" stroke="#7ac943" stroke-width="1.8"/></g>
+    <text x="868" y="438" class="lbl" font-size="12.5">display :103</text>
+    <rect x="868" y="450" width="78" height="54" rx="6" fill="#04210a" stroke="#2f5a1c"/><text x="907" y="481" class="mut" font-size="10" text-anchor="middle">Xvfb</text>
+    <rect x="956" y="450" width="78" height="54" rx="6" fill="#04210a" stroke="#2f5a1c"/><text x="995" y="475" class="mut" font-size="10" text-anchor="middle">Chrome</text><text x="995" y="490" class="mut" font-size="10" text-anchor="middle">kiosk</text>
+    <rect x="1044" y="450" width="72" height="54" rx="6" fill="#0c1f0c" stroke="#7ac943"/><text x="1080" y="475" class="grn" font-size="10" text-anchor="middle">VP8</text><text x="1080" y="490" class="grn" font-size="10" text-anchor="middle">encoder</text>
+  </g>
+
+  <!-- WebRTC out -->
+  <g filter="url(#g)"><rect x="1180" y="290" width="100" height="135" rx="14" fill="#0c130a" stroke="#7ac943" stroke-width="2"/></g>
+  <text x="1230" y="345" class="grn" font-size="13" text-anchor="middle">WebRTC</text>
+  <text x="1230" y="366" class="mut" font-size="10.5" text-anchor="middle">video out</text>
+  <text x="1230" y="382" class="mut" font-size="10.5" text-anchor="middle">+ input in</text>
+
+  <!-- flow connectors users->ports->admission->sessions->webrtc -->
+  <g stroke="url(#gl)" stroke-width="2.4" fill="none" filter="url(#g)" stroke-dasharray="7 9">
+    <path d="M230,185 C260,185 440,210 470,210"><animate attributeName="stroke-dashoffset" from="32" to="0" dur=".9s" repeatCount="indefinite"/></path>
+    <path d="M230,265 C260,265 440,255 470,255"><animate attributeName="stroke-dashoffset" from="32" to="0" dur=".9s" repeatCount="indefinite"/></path>
+    <path d="M230,345 C260,345 440,300 470,300"><animate attributeName="stroke-dashoffset" from="32" to="0" dur=".9s" repeatCount="indefinite"/></path>
+    <line x1="620" y1="266" x2="660" y2="266"><animate attributeName="stroke-dashoffset" from="32" to="0" dur=".8s" repeatCount="indefinite"/></line>
+    <line x1="780" y1="266" x2="852" y2="220"><animate attributeName="stroke-dashoffset" from="32" to="0" dur=".8s" repeatCount="indefinite"/></line>
+    <line x1="780" y1="266" x2="852" y2="345"><animate attributeName="stroke-dashoffset" from="32" to="0" dur=".8s" repeatCount="indefinite"/></line>
+    <line x1="780" y1="266" x2="852" y2="470"><animate attributeName="stroke-dashoffset" from="32" to="0" dur=".8s" repeatCount="indefinite"/></line>
+    <path d="M1128,220 C1160,220 1160,330 1180,340"><animate attributeName="stroke-dashoffset" from="32" to="0" dur=".8s" repeatCount="indefinite"/></path>
+    <path d="M1128,470 C1160,470 1160,380 1180,372"><animate attributeName="stroke-dashoffset" from="32" to="0" dur=".8s" repeatCount="indefinite"/></path>
+  </g>
+  <g fill="#aef07a" filter="url(#gb)">
+    <circle r="3.6"><animateMotion dur="2s" repeatCount="indefinite" path="M230,185 C260,185 440,210 470,210"/></circle>
+    <circle r="3.6"><animateMotion dur="2s" begin=".7s" repeatCount="indefinite" path="M230,345 C260,345 440,300 470,300"/></circle>
+    <circle r="3.6"><animateMotion dur="1.6s" repeatCount="indefinite" path="M780,266 L852,220"/></circle>
+  </g>
+
+  <!-- bottom: admin + shared bridge -->
+  <g filter="url(#g)"><rect x="70" y="600" width="300" height="150" rx="16" fill="#0c130a" stroke="#7ac943" stroke-width="2"/></g>
+  <text x="220" y="632" class="lbl" font-size="16" text-anchor="middle">Admin console :8200</text>
+  <text x="220" y="658" class="mut" font-size="12" text-anchor="middle">white panel · Montserrat brand</text>
+  <text x="220" y="680" class="mut" font-size="12" text-anchor="middle">add sites · set policies · ports</text>
+  <text x="220" y="702" class="mut" font-size="12" text-anchor="middle">see live sessions, CPU &amp; RAM</text>
+  <text x="220" y="726" class="mut" font-size="12" text-anchor="middle">stop a session · enable/disable</text>
+
+  <!-- shared json bridge -->
+  <g filter="url(#g)"><rect x="430" y="610" width="320" height="130" rx="16" fill="#070f07" stroke="#244016" stroke-width="1.5"/></g>
+  <text x="590" y="640" class="sub" font-size="14" text-anchor="middle">shared/ bridge (JSON files)</text>
+  <g text-anchor="middle">
+    <rect x="452" y="656" width="135" height="30" rx="7" fill="#0c130a" stroke="#7ac943"/><text x="519" y="676" class="grn" font-size="11">config.json</text>
+    <rect x="600" y="656" width="135" height="30" rx="7" fill="#0c130a" stroke="#7ac943"/><text x="667" y="676" class="grn" font-size="11">sessions.json</text>
+    <rect x="452" y="696" width="283" height="30" rx="7" fill="#0c130a" stroke="#7ac943"/><text x="593" y="716" class="grn" font-size="11">commands.json (stop / kill)</text>
+  </g>
+
+  <!-- streamer label -->
+  <g filter="url(#g)"><rect x="810" y="600" width="340" height="150" rx="16" fill="#0c130a" stroke="#7ac943" stroke-width="2"/></g>
+  <text x="980" y="632" class="lbl" font-size="16" text-anchor="middle">Streamer (webrtc_server.py)</text>
+  <text x="980" y="658" class="mut" font-size="12" text-anchor="middle">reads config.json live (sites + policies)</text>
+  <text x="980" y="680" class="mut" font-size="12" text-anchor="middle">writes sessions.json (who's on, load)</text>
+  <text x="980" y="702" class="mut" font-size="12" text-anchor="middle">enforces every policy server-side</text>
+  <text x="980" y="726" class="mut" font-size="12" text-anchor="middle">spawns / tears down each private env</text>
+
+  <!-- admin <-> shared <-> streamer arrows -->
+  <g stroke="#7ac943" stroke-width="2.2" fill="none" filter="url(#g)" stroke-dasharray="7 8">
+    <line x1="370" y1="675" x2="430" y2="675"><animate attributeName="stroke-dashoffset" from="30" to="0" dur="1s" repeatCount="indefinite"/></line>
+    <line x1="750" y1="675" x2="810" y2="675"><animate attributeName="stroke-dashoffset" from="0" to="30" dur="1s" repeatCount="indefinite"/></line>
+  </g>
+  <text x="400" y="668" class="mut" font-size="10" text-anchor="middle">writes</text>
+  <text x="780" y="668" class="mut" font-size="10" text-anchor="middle">reads</text>
+
+  <text x="660" y="772" class="mut" font-size="12" text-anchor="middle">Zero Trust, Verify Everything — sized for one box now (cap 3); add servers behind nginx for 15–50.</text>
+</svg>

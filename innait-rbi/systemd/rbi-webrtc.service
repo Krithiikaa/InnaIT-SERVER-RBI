@@ -1,0 +1,18 @@
+[Unit]
+Description=InnaIT RBI streamer (WebRTC)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/rbi-web-v1
+EnvironmentFile=/opt/rbi-web-v1/rbi.env
+ExecStartPre=/bin/mkdir -p /opt/rbi-web-v1/logs
+ExecStart=/usr/bin/python3 /opt/rbi-web-v1/webrtc_server.py
+Restart=always
+RestartSec=3
+# clean up any orphaned sandbox processes if we crash
+ExecStopPost=/bin/sh -c 'pkill -9 -f chrome; pkill -9 -f chromium; pkill -9 -f Xvfb; true'
+
+[Install]
+WantedBy=multi-user.target

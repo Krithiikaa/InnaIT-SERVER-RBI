@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<title>InnaIT · Secure Browsing</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
+  *{box-sizing:border-box}
+  html, body { margin:0; height:100%; background:#000; overflow:hidden;
+    font-family:'Montserrat',system-ui,sans-serif; touch-action:none; overscroll-behavior:none; color:#e9f3e1; }
+  #screen { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; display:block; background:#000; outline:none; }
+
+  /* TOP connecting / status glass bar */
+  #topbar { position:absolute; top:14px; left:50%; transform:translateX(-50%); z-index:7;
+    display:flex; align-items:center; gap:11px; max-width:92vw; padding:10px 18px; border-radius:13px;
+    font-size:13px; white-space:nowrap;
+    background:rgba(8,18,8,.42); backdrop-filter:blur(20px) saturate(150%); -webkit-backdrop-filter:blur(20px) saturate(150%);
+    border:1px solid rgba(122,201,67,.4); box-shadow:0 8px 30px rgba(0,0,0,.4), 0 0 22px rgba(122,201,67,.16);
+    color:#eafff5; opacity:0; transition:opacity .55s ease; }
+  #topbar.show{ opacity:.95; }
+  #topbar.hide{ opacity:0; pointer-events:none; }
+  #topbar .dot{ width:9px;height:9px;border-radius:50%;background:#7ac943;box-shadow:0 0 10px #7ac943;
+    animation:pls 1.3s ease-in-out infinite; }
+  #topbar.ready .dot{ animation:none; }
+  @keyframes pls{0%,100%{opacity:.4;transform:scale(.8)}50%{opacity:1;transform:scale(1.15)}}
+
+  /* BOTTOM-LEFT green-glass lock popup */
+  /* BOTTOM-LEFT lock popup — clean white frosted glass */
+  #locks{ position:absolute; left:18px; bottom:18px; z-index:7; display:none; flex-direction:column; gap:10px; max-width:330px; }
+  .lockcard{ display:flex; align-items:center; gap:11px; padding:11px 15px; border-radius:16px;
+    background:rgba(255,255,255,.86); backdrop-filter:blur(22px) saturate(155%); -webkit-backdrop-filter:blur(22px) saturate(155%);
+    border:1px solid rgba(255,255,255,.95);
+    box-shadow:0 12px 34px rgba(16,40,16,.20), 0 2px 6px rgba(16,40,16,.10);
+    color:#1c2b16; font-size:12.5px; font-weight:500; letter-spacing:.1px;
+    transform:translateY(12px); opacity:0; animation:rbiRise .5s cubic-bezier(.2,.7,.3,1) forwards; }
+  .lockcard:nth-child(2){ animation-delay:.06s } .lockcard:nth-child(3){ animation-delay:.12s }
+  .lockcard.hdr{ font-weight:700; color:#16321a; }
+  .lockcard.hdr img{ height:20px; filter:drop-shadow(0 1px 2px rgba(0,0,0,.12)); }
+  .lockcard .ic{ width:8px;height:8px;border-radius:50%;background:#7ac943;flex:0 0 auto;
+    box-shadow:0 0 0 3px rgba(122,201,67,.18); }
+  .lockcard.mode{ background:rgba(255,255,255,.92); border-color:rgba(122,201,67,.55);
+    box-shadow:0 12px 34px rgba(16,40,16,.22), 0 0 0 1px rgba(122,201,67,.25); }
+  .lockcard.mode .ic{ animation:rbiPulse 1.6s ease-in-out infinite; }
+  @keyframes rbiRise{ to{ opacity:1; transform:translateY(0); } }
+  @keyframes rbiPulse{ 0%,100%{ box-shadow:0 0 0 3px rgba(122,201,67,.18);} 50%{ box-shadow:0 0 0 5px rgba(122,201,67,.30);} }
+
+  /* BOTTOM-RIGHT floating logo badge — white frosted glass, soft shadow, gentle float */
+  #rbi-badge { position:absolute; right:18px; bottom:18px; z-index:7; display:flex; align-items:center; gap:12px;
+    padding:10px 16px; border-radius:18px;
+    background:rgba(255,255,255,.88); backdrop-filter:blur(24px) saturate(160%); -webkit-backdrop-filter:blur(24px) saturate(160%);
+    border:1px solid rgba(255,255,255,.95);
+    box-shadow:0 14px 38px rgba(16,40,16,.24), 0 3px 10px rgba(16,40,16,.12);
+    opacity:0; transform:translateY(14px) scale(.96); transition:opacity .7s ease, transform .7s cubic-bezier(.2,.7,.3,1); }
+  #rbi-badge.show{ opacity:1; transform:translateY(0) scale(1); animation:rbiFloat 4s ease-in-out 1s infinite; }
+  #rbi-badge img{ height:24px; filter:drop-shadow(0 1px 2px rgba(0,0,0,.14)); }
+  #rbi-badge span{ font-size:11px; font-weight:700; color:#16321a; line-height:1.25;
+    border-left:1px solid rgba(16,40,16,.14); padding-left:12px; letter-spacing:.2px; }
+  @keyframes rbiFloat{ 0%,100%{ transform:translateY(0) scale(1);} 50%{ transform:translateY(-5px) scale(1);} }
+</style>
+</head>
+<body>
+  <video id="screen" autoplay playsinline muted tabindex="0"></video>
+  <div id="topbar"><span class="dot"></span><span id="tbtext">Connecting to secure isolated session…</span></div>
+  <div id="locks"></div>
+  <div id="rbi-badge"><img src="/assets/logo.png" alt="Precision"/><span>Running in RBI</span></div>
+
+<script>
+  let VW=1280, VH=720, pc=null, shown=false;
+  const video=document.getElementById('screen');
+  const topbar=document.getElementById('topbar'), tbtext=document.getElementById('tbtext');
+  const badge=document.getElementById('rbi-badge');
+
+  // Always-on Back trap: the outer browser can NEVER leave the viewer.
+  // Every Back press is re-trapped and relayed to the sandbox as "go back inside the site".
+  (function(){
+    function arm(){ try { history.pushState({rbi: Date.now()}, ''); } catch(e){} }
+    arm(); arm(); arm();
+    window.addEventListener('popstate', function(){
+      arm();                                   // immediately refill the buffer (never exit)
+      if (window._send) window._send({type:'nav', action:'back'});  // go back inside the site
+    });
+    // keep a buffer entry present at all times as a safety net
+    setInterval(arm, 1500);
+  })();
+
+  setTimeout(()=>topbar.classList.add('show'), 200);
+
+  // Auto-connect: server picks the site from the port you opened.
+  const WSP = (location.protocol === 'https:') ? 'wss' : 'ws';
+  const ws = new WebSocket(`${WSP}://${location.host}/ws`); window._ws = ws;
+  const send = (o)=>{ if(ws.readyState===1) ws.send(JSON.stringify(o)); };
+  window._send = send;
+  ws.onopen = ()=> send({type:'resize', width:window.innerWidth, height:window.innerHeight});
+  ws.onmessage = async (ev)=>{
+    const m = JSON.parse(ev.data);
+    if(m.type==='config'){ VW=m.width; VH=m.height; if(m.name) document.title='InnaIT · '+m.name; window._policies=m.policies||{}; }
+    else if(m.type==='capacity'){ topbar.classList.remove('hide'); topbar.classList.add('show');
+      topbar.querySelector('.dot').style.background='#ffcf6b'; topbar.querySelector('.dot').style.boxShadow='0 0 10px #ffcf6b';
+      tbtext.textContent = `Server at capacity (${m.used||''}/${m.cap||''} in use) — please try again shortly`; }
+    else if(m.type==='disabled'){ topbar.classList.remove('hide'); topbar.classList.add('show'); tbtext.textContent='This site is not available'; }
+    else if(m.type==='sdp'){ if(!pc) makePC(send); await pc.setRemoteDescription(m.sdp);
+      if(m.sdp.type==='offer'){ const a=await pc.createAnswer(); await pc.setLocalDescription(a); send({type:'sdp',sdp:{type:a.type,sdp:a.sdp}}); } }
+    else if(m.type==='ice'){ try{ await pc.addIceCandidate(m.candidate); }catch{} }
+  };
+  ws.onclose = ()=>{ topbar.classList.remove('hide','ready'); topbar.classList.add('show');
+    topbar.querySelector('.dot').style.background='#ff6b6b'; topbar.querySelector('.dot').style.boxShadow='0 0 10px #ff6b6b';
+    tbtext.textContent='Disconnected'; };
+
+  function renderLocks(P){
+    const el=document.getElementById('locks'); if(!el) return;
+    let html = '<div class="lockcard hdr"><img src="/assets/logo.png" alt=""><span>Secured by InnaIT RBI</span></div>';
+    if(P.read_only)   html += '<div class="lockcard mode"><span class="ic"></span><span>Currently reading mode turned on</span></div>';
+    if(P.scroll_lock) html += '<div class="lockcard mode"><span class="ic"></span><span>Scroll is locked</span></div>';
+    const blocked=[];
+    if(!P.copy)blocked.push('Copy'); if(!P.paste)blocked.push('Paste'); if(!P.clipboard)blocked.push('Clipboard');
+    if(!P.download)blocked.push('Download'); if(!P.print)blocked.push('Print'); if(!P.devtools)blocked.push('DevTools');
+    if(blocked.length) html += '<div class="lockcard"><span class="ic"></span><span>Blocked: '+blocked.join(' &middot; ')+'</span></div>';
+    el.innerHTML=html; el.style.display='flex';
+  }
+
+  function makePC(send){
+    pc=new RTCPeerConnection({iceServers:[]});   // LAN: host candidates only
+    pc.ontrack=(e)=>{ video.srcObject=e.streams[0];
+      if(!shown){ shown=true;
+        topbar.classList.add('ready'); tbtext.textContent='Connected — running in isolation browser';
+        setTimeout(()=>topbar.classList.add('hide'), 2600);
+        renderLocks(window._policies||{});
+        setTimeout(()=>badge.classList.add('show'), 700); } };
+    pc.onicecandidate=(e)=>{ if(e.candidate) send({type:'ice',candidate:e.candidate}); };
+  }
+
+  // ---- input relay (all mouse buttons + keyboard with modifiers) ----
+  const btn=(b)=>(b===2?'3':b===1?'2':'1');
+  function map(cx,cy){ const r=video.getBoundingClientRect(); const sc=Math.min(r.width/VW,r.height/VH);
+    const dw=VW*sc, dh=VH*sc, ox=r.left+(r.width-dw)/2, oy=r.top+(r.height-dh)/2;
+    return {x:Math.max(0,Math.min(VW,(cx-ox)/sc)), y:Math.max(0,Math.min(VH,(cy-oy)/sc))}; }
+  let lm=0;
+  video.addEventListener('mousemove',(e)=>{ const n=Date.now(); if(n-lm<50)return; lm=n; const p=map(e.clientX,e.clientY); send({type:'mousemove',x:p.x,y:p.y}); });
+  video.addEventListener('mousedown',(e)=>{ e.preventDefault(); video.focus(); const p=map(e.clientX,e.clientY); send({type:'mousedown',x:p.x,y:p.y,button:btn(e.button)}); });
+  video.addEventListener('mouseup',(e)=>{ e.preventDefault(); const p=map(e.clientX,e.clientY); send({type:'mouseup',x:p.x,y:p.y,button:btn(e.button)}); });
+  video.addEventListener('contextmenu',(e)=>e.preventDefault());
+  let lw=0;
+  video.addEventListener('wheel',(e)=>{ e.preventDefault(); const n=Date.now(); if(n-lw<140)return; if(Math.abs(e.deltaY)<8)return; lw=n; const p=map(e.clientX,e.clientY); send({type:'wheel',x:p.x,y:p.y,deltaY:e.deltaY}); },{passive:false});
+  video.addEventListener('touchstart',(e)=>{ e.preventDefault(); const t=e.touches[0]; const p=map(t.clientX,t.clientY); send({type:'mousemove',x:p.x,y:p.y}); send({type:'mousedown',x:p.x,y:p.y,button:'1'}); },{passive:false});
+  video.addEventListener('touchmove',(e)=>{ e.preventDefault(); const t=e.touches[0]; const p=map(t.clientX,t.clientY); send({type:'mousemove',x:p.x,y:p.y}); },{passive:false});
+  video.addEventListener('touchend',(e)=>{ e.preventDefault(); send({type:'mouseup',x:0,y:0,button:'1'}); },{passive:false});
+  window.addEventListener('keydown',(e)=>{ e.preventDefault(); send({type:'key', key:e.key, ctrl:e.ctrlKey, alt:e.altKey, shift:e.shiftKey, meta:e.metaKey}); });
+</script>
+</body>
+</html>

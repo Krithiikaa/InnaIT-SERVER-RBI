@@ -1,0 +1,15 @@
+[Unit]
+Description=InnaIT RBI admin console
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/rbi-web-v1
+EnvironmentFile=/opt/rbi-web-v1/rbi.env
+ExecStart=/usr/bin/python3 /opt/rbi-web-v1/admin_server.py
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
