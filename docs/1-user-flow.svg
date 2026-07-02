@@ -1,0 +1,158 @@
+<svg viewBox="0 0 1480 860" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&amp;display=swap');
+      text { font-family: 'Playfair Display', Georgia, 'Times New Roman', serif; }
+      .mono{ font-family:'Courier New', monospace; }
+      .title{ fill:#16321a; font-weight:700; }
+      .sub{ fill:#3f7d22; font-weight:400; }
+      .lbl{ fill:#1f2a1a; font-weight:700; }
+      .mut{ fill:#5d6f4e; font-weight:400; }
+      .grn{ fill:#3f7d22; font-weight:700; }
+      .amb{ fill:#9a7d12; font-weight:700; }
+      .red{ fill:#b6452f; font-weight:600; }
+    </style>
+    <filter id="soft" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="3" stdDeviation="5" flood-color="#16321a" flood-opacity="0.14"/></filter>
+    <linearGradient id="greenLine" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#9bd36a"/><stop offset="100%" stop-color="#4e9a2a"/></linearGradient>
+  </defs>
+
+  <rect x="0" y="0" width="1480" height="860" fill="#f5f8f2"/>
+  <rect x="0" y="0" width="1480" height="6" fill="#7ac943"/>
+
+  <!-- faint matrix backdrop -->
+  <g opacity="0.05" stroke="#7ac943" stroke-width="2">
+    <line x1="180" y1="60" x2="180" y2="800" stroke-dasharray="3 26"><animate attributeName="stroke-dashoffset" from="0" to="290" dur="6s" repeatCount="indefinite"/></line>
+    <line x1="620" y1="60" x2="620" y2="800" stroke-dasharray="3 30"><animate attributeName="stroke-dashoffset" from="0" to="330" dur="7s" repeatCount="indefinite"/></line>
+    <line x1="1120" y1="60" x2="1120" y2="800" stroke-dasharray="3 22"><animate attributeName="stroke-dashoffset" from="0" to="250" dur="5s" repeatCount="indefinite"/></line>
+  </g>
+
+  <!-- header -->
+  <text x="60" y="62" class="title" font-size="34">InnaIT · RBI User Flow &amp; Tooling</text>
+  <text x="62" y="92" class="sub" font-size="16">Identity Secured — open a port, get admitted, watch a private sandbox stream; only pixels leave, only input returns.</text>
+
+  <!-- ===================== USER ===================== -->
+  <g filter="url(#soft)"><rect x="70" y="330" width="190" height="170" rx="16" fill="#ffffff" stroke="#7ac943" stroke-width="2"/></g>
+  <rect x="96" y="356" width="138" height="92" rx="8" fill="#eef7e6" stroke="#a9d488" stroke-width="1.5"/>
+  <polygon points="150,382 150,424 186,403" fill="#7ac943"/>
+  <text x="165" y="474" class="lbl" font-size="15" text-anchor="middle">User (untrusted)</text>
+  <text x="165" y="494" class="mut" font-size="12" text-anchor="middle">sees only a video</text>
+  <circle cx="96" cy="330" r="14" fill="#7ac943"/><text x="96" y="335" font-size="13" font-weight="700" fill="#ffffff" text-anchor="middle">1</text>
+  <text x="165" y="300" class="mono" font-size="10.5" fill="#7a8c6a" text-anchor="middle">index.html · RTCPeerConnection</text>
+  <text x="165" y="316" class="mono" font-size="10.5" fill="#7a8c6a" text-anchor="middle">opens HOST:8100 · ws/wss auto</text>
+
+  <!-- ===================== ADMISSION ===================== -->
+  <g filter="url(#soft)"><rect x="300" y="340" width="150" height="150" rx="16" fill="#fffdf2" stroke="#caa53a" stroke-width="2"/></g>
+  <text x="375" y="372" class="amb" font-size="14" text-anchor="middle">Admission</text>
+  <text x="375" y="398" class="mono" font-size="11" fill="#9a7d12" text-anchor="middle">cap = 3</text>
+  <text x="375" y="418" class="mono" font-size="11" fill="#9a7d12" text-anchor="middle">psutil gate</text>
+  <text x="375" y="438" class="mono" font-size="11" fill="#9a7d12" text-anchor="middle">cpu/ram &lt; 85%</text>
+  <text x="375" y="464" class="mut" font-size="11" text-anchor="middle">admit → spawn</text>
+  <circle cx="300" cy="340" r="14" fill="#caa53a"/><text x="300" y="345" font-size="13" font-weight="700" fill="#ffffff" text-anchor="middle">2</text>
+
+  <!-- ===================== BOUNDARY ===================== -->
+  <line x1="500" y1="170" x2="500" y2="700" stroke="#7ac943" stroke-width="1.8" stroke-dasharray="6 8" opacity="0.85"/>
+  <g transform="translate(500,170)">
+    <path d="M0,-20 L17,-11 L17,7 C17,21 0,31 0,31 C0,31 -17,21 -17,7 L-17,-11 Z" fill="#eef7e6" stroke="#7ac943" stroke-width="2"/>
+    <path d="M-7,3 C-7,-4 7,-4 7,3" fill="none" stroke="#4e9a2a" stroke-width="1.5"/>
+  </g>
+  <text x="500" y="724" class="grn" font-size="13" text-anchor="middle">ISOLATION BOUNDARY</text>
+
+  <!-- ===================== SANDBOX PANEL ===================== -->
+  <rect x="540" y="170" width="880" height="470" rx="18" fill="#ffffff" stroke="#cfe0c2" stroke-width="1.8"/>
+  <text x="564" y="200" class="sub" font-size="15">Server 10.0.49.145 — private session (one per viewer, own display :10N)</text>
+
+  <!-- node row: GStreamer(6) -> Xvfb(5) -> Chrome(4) -> Real site(3) -->
+  <!-- GStreamer -->
+  <g filter="url(#soft)"><rect x="566" y="300" width="180" height="140" rx="14" fill="#ffffff" stroke="#7ac943" stroke-width="2"/></g>
+  <text x="656" y="334" class="lbl" font-size="14.5" text-anchor="middle">GStreamer</text>
+  <text x="656" y="360" class="mut" font-size="11" text-anchor="middle">ximagesrc grab</text>
+  <text x="656" y="378" class="mut" font-size="11" text-anchor="middle">→ vp8enc (libvpx)</text>
+  <text x="656" y="396" class="mut" font-size="11" text-anchor="middle">→ webrtcbin</text>
+  <text x="656" y="422" class="mono" font-size="10" fill="#3f7d22" text-anchor="middle">hot path · CPU</text>
+  <circle cx="566" cy="300" r="14" fill="#7ac943"/><text x="566" y="305" font-size="13" font-weight="700" fill="#ffffff" text-anchor="middle">6</text>
+
+  <!-- Xvfb -->
+  <g filter="url(#soft)"><rect x="778" y="300" width="170" height="140" rx="14" fill="#ffffff" stroke="#8bb763" stroke-width="2"/></g>
+  <text x="863" y="334" class="lbl" font-size="14.5" text-anchor="middle">Xvfb :10N</text>
+  <text x="863" y="360" class="mut" font-size="11" text-anchor="middle">virtual display</text>
+  <text x="863" y="378" class="mut" font-size="11" text-anchor="middle">sized to viewer</text>
+  <text x="863" y="422" class="mono" font-size="10" fill="#3f7d22" text-anchor="middle">crisp · no stretch</text>
+  <circle cx="778" cy="300" r="14" fill="#7ac943"/><text x="778" y="305" font-size="13" font-weight="700" fill="#ffffff" text-anchor="middle">5</text>
+
+  <!-- Chrome -->
+  <g filter="url(#soft)"><rect x="980" y="300" width="180" height="140" rx="14" fill="#ffffff" stroke="#7ac943" stroke-width="2"/></g>
+  <text x="1070" y="334" class="lbl" font-size="14.5" text-anchor="middle">Chrome · kiosk</text>
+  <text x="1070" y="360" class="mut" font-size="11" text-anchor="middle">renders the REAL site</text>
+  <text x="1070" y="378" class="mut" font-size="11" text-anchor="middle">own profile · policies</text>
+  <text x="1070" y="422" class="mono" font-size="10" fill="#3f7d22" text-anchor="middle">google-chrome-stable</text>
+  <circle cx="980" cy="300" r="14" fill="#7ac943"/><text x="980" y="305" font-size="13" font-weight="700" fill="#ffffff" text-anchor="middle">4</text>
+
+  <!-- Real website -->
+  <g filter="url(#soft)"><rect x="1192" y="300" width="200" height="140" rx="14" fill="#fffdf2" stroke="#caa53a" stroke-width="2"/></g>
+  <text x="1292" y="334" class="amb" font-size="14.5" text-anchor="middle">Real website</text>
+  <text x="1292" y="360" class="mut" font-size="11" text-anchor="middle">HTML · JS · cookies · APIs</text>
+  <text x="1292" y="378" class="mut" font-size="11" text-anchor="middle">never leaves this box</text>
+  <text x="1292" y="422" class="mono" font-size="10" fill="#9a7d12" text-anchor="middle">the dangerous origin</text>
+  <circle cx="1192" cy="300" r="14" fill="#caa53a"/><text x="1192" y="305" font-size="13" font-weight="700" fill="#ffffff" text-anchor="middle">3</text>
+
+  <!-- internal flow arrows (right -> left): site->chrome->xvfb->gstreamer -->
+  <g stroke="#9ec77f" stroke-width="2" fill="none">
+    <line x1="1192" y1="370" x2="1160" y2="370"/>
+    <line x1="980" y1="370" x2="948" y2="370"/>
+    <line x1="778" y1="370" x2="746" y2="370"/>
+  </g>
+  <g fill="#4e9a2a">
+    <circle r="3.6"><animateMotion dur="1.6s" repeatCount="indefinite" path="M1192,370 L1160,370"/></circle>
+    <circle r="3.6"><animateMotion dur="1.4s" repeatCount="indefinite" path="M980,370 L948,370"/></circle>
+    <circle r="3.6"><animateMotion dur="1.2s" repeatCount="indefinite" path="M778,370 L746,370"/></circle>
+  </g>
+
+  <!-- xdotool input injector (lower, clear of arcs) -->
+  <g filter="url(#soft)"><rect x="778" y="500" width="170" height="74" rx="14" fill="#fdf0ee" stroke="#c66a55" stroke-width="1.8"/></g>
+  <text x="863" y="530" class="red" font-size="13.5" text-anchor="middle">xdotool · input</text>
+  <text x="863" y="552" class="mut" font-size="11" text-anchor="middle">replays click / key / scroll</text>
+  <circle cx="778" cy="500" r="14" fill="#c66a55"/><text x="778" y="505" font-size="13" font-weight="700" fill="#ffffff" text-anchor="middle">7</text>
+
+  <!-- policy engine (sized so text fits inside) -->
+  <g filter="url(#soft)"><rect x="980" y="500" width="412" height="74" rx="14" fill="#f3f8ee" stroke="#cfe0c2" stroke-width="1.6"/></g>
+  <text x="1000" y="528" class="sub" font-size="12.5">Server-side policy engine (config.json)</text>
+  <text x="1000" y="548" class="mut" font-size="10.5">read-only · scroll-lock · devtools · copy/paste · download · print</text>
+  <text x="1000" y="565" class="mut" font-size="10.5">enforced before input ever reaches the page</text>
+
+  <!-- xdotool -> chrome -->
+  <path d="M948,520 C1000,500 1010,470 1040,442" fill="none" stroke="#d79b8c" stroke-width="1.6" opacity="0.8"/>
+  <g fill="#c66a55"><circle r="3.4"><animateMotion dur="1.5s" repeatCount="indefinite" path="M948,520 C1000,500 1010,470 1040,442"/></circle></g>
+
+  <!-- VIDEO OUT arc: GStreamer -> across boundary -> user (label ABOVE, clear of boxes) -->
+  <path d="M566,346 C420,330 360,326 262,360" fill="none" stroke="url(#greenLine)" stroke-width="3.5" stroke-dasharray="9 12"><animate attributeName="stroke-dashoffset" from="42" to="0" dur="0.9s" repeatCount="indefinite"/></path>
+  <g fill="#4e9a2a">
+    <circle r="5"><animateMotion dur="1.5s" repeatCount="indefinite" path="M566,346 C420,330 360,326 262,360"/></circle>
+    <circle r="5"><animateMotion dur="1.5s" begin="0.5s" repeatCount="indefinite" path="M566,346 C420,330 360,326 262,360"/></circle>
+    <circle r="5"><animateMotion dur="1.5s" begin="1s" repeatCount="indefinite" path="M566,346 C420,330 360,326 262,360"/></circle>
+  </g>
+  <text x="395" y="306" class="grn" font-size="13" text-anchor="middle">VP8 VIDEO →  (WebRTC / SRTP)</text>
+  <text x="395" y="324" class="mut" font-size="11" text-anchor="middle">pixels only · 30 fps</text>
+
+  <!-- INPUT IN arc: user -> across boundary -> xdotool (label BELOW arc, clear) -->
+  <path d="M262,440 C380,520 560,548 778,540" fill="none" stroke="#c66a55" stroke-width="2.4" stroke-dasharray="8 11" opacity="0.9"><animate attributeName="stroke-dashoffset" from="0" to="38" dur="1.1s" repeatCount="indefinite"/></path>
+  <g fill="#c66a55">
+    <circle r="4"><animateMotion dur="1.9s" repeatCount="indefinite" path="M262,440 C380,520 560,548 778,540"/></circle>
+    <circle r="4"><animateMotion dur="1.9s" begin="0.95s" repeatCount="indefinite" path="M262,440 C380,520 560,548 778,540"/></circle>
+  </g>
+  <text x="470" y="596" class="red" font-size="12" text-anchor="middle">← INPUT: click · type · scroll · alt+Left (in-site back)</text>
+
+  <!-- ===================== FALLBACK BAND ===================== -->
+  <g filter="url(#soft)"><rect x="70" y="652" width="1350" height="96" rx="16" fill="#fffdf2" stroke="#d8c270" stroke-width="1.6"/></g>
+  <circle cx="98" cy="680" r="13" fill="#caa53a"/><text x="98" y="685" font-size="12" font-weight="700" fill="#ffffff" text-anchor="middle">F</text>
+  <text x="122" y="685" class="amb" font-size="15">Fallback &amp; resilience (kept, runs automatically)</text>
+  <g class="mut" font-size="11.5">
+    <text x="122" y="712">• Browser auto-detect: google-chrome-stable → google-chrome → chromium (never hard-fails on one binary).</text>
+    <text x="122" y="732">• Xvfb / window not ready → one clean retry; stale lock &amp; profile cleared before respawn.</text>
+    <text x="760" y="712">• Over capacity / CPU spike → graceful "Server at capacity" screen; existing sessions untouched.</text>
+    <text x="760" y="732">• Disconnect → private env torn down, display number returned to the pool for the next user.</text>
+  </g>
+
+  <!-- footer -->
+  <text x="740" y="794" class="mut" font-size="12.5" text-anchor="middle">Zero Trust · Verify Everything — the site runs sealed in the sandbox; the attacker only ever holds a moving picture of it.</text>
+  <text x="740" y="816" class="mono" font-size="10.5" fill="#7a8c6a" text-anchor="middle">flow: 1 open → 2 admit → 5 Xvfb + 4 Chrome render 3 real site → 6 GStreamer encode → VP8 out → 7 xdotool replays input</text>
+</svg>
