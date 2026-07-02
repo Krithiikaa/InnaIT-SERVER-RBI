@@ -15,11 +15,12 @@
 
 </div>
 
----
+
 
 <div align="center">
 <img src="docs/0-banner.svg" alt="InnaIT RBI — Run the web at arm's length" width="100%">
 
+---
 
 ## 📖 Table of Contents
 
